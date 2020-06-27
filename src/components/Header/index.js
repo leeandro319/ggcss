@@ -1,42 +1,48 @@
-import React, {useState} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import React from "react";
+import { useRef } from "react";
+import { motion, useCycle } from "framer-motion";
+import { useDimensions } from "./use-dimensions";
+import { MenuToggle } from "./MenuToggle";
+import { Navigation } from "./Navigation";
 
+import "./style.css";
 
-import {Container} from './NavStyle'
-
-
-
-export default function Header() {
-
-  const [navDrop, setNavDrop] = useState(false);
+const sidebar = {
+  open: (height = 1000) => ({
+    clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
+    transition: {
+      type: "spring",
+      stiffness: 20,
+      restDelta: 2,
+    },
+  }),
+  closed: {
+    clipPath: "circle(30px at 40px 40px)",
+    transition: {
+      delay: 0.5,
+      type: "spring",
+      stiffness: 400,
+      damping: 40,
+    },
+  },
+};
+export const NavMenu = () => {
+  const [isOpen, toggleOpen] = useCycle(false, true);
+  const containerRef = useRef(null);
+  const { height } = useDimensions(containerRef);
 
   return (
-        <Container>
-        <nav>
-        <span className="logo">
-          <FontAwesomeIcon icon={faCoffee} />
-          </span>
-        <div className="mobile">
-        onClick={() => setNavDrop(!navDrop)}
-          
-        <FontAwesomeIcon icon={faCoffee} />
-          
-          {navDrop && <div className="listMobile">
-            <p>teste</p>
-            </div>}
-
-            </div>
-        <div className="links-navegator"> 
-            <ul className="nav-links">
-                <li className="nav-links">Border</li>
-                <li className="nav-links">Border Radius</li>
-                <li className="nav-links">Box Shadow</li>
-                <li className="nav-links">Text Shadow</li>
-                <li className="nav-links">Transform Css</li>
-            </ul>
-        </div> 
-        </nav>
-        </Container>
+    <motion.nav
+      initial={false}
+      animate={isOpen ? "open" : "closed"}
+      custom={height}
+      ref={containerRef}
+    >
+      <motion.div className="background" variants={sidebar} />
+      <Navigation />
+      <MenuToggle toggle={() => toggleOpen()} />
+    </motion.nav>
   );
-}
+};
+
+export default NavMenu;
