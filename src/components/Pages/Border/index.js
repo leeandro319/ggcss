@@ -1,77 +1,81 @@
-import React, { useState } from 'react';
-import {Link} from 'react-router-dom';
-import { Container, DivAround, SecAround, SecAround2, DivRange } from '../../mainStyle';
-import { BorderStyle } from './BorderStyle'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  Container,
+  DivAround,
+  SecAround,
+  SecAround2,
+  DivRange,
+} from "../../mainStyle";
+import { BorderStyle } from "./BorderStyle";
 
-import reactCSS from 'reactcss'
-import { ChromePicker } from 'react-color'
+import reactCSS from "reactcss";
+import { ChromePicker } from "react-color";
 
 export default function Border() {
+  const [borderStyle, setBorderStyle] = useState("solid");
 
-  const [borderStyle, setBorderStyle] = useState('solid');
+  const [borderWidth, setBorderWidth] = useState("1");
 
-  const [borderWidth, setBorderWidth] = useState('1');
-
-  const [displayColorPicker, setdisplayColorPicker] = useState(false)
-  const [color, setColor] = useState({ r: '0', g: '0', b: '0', a: '1' })
+  const [displayColorPicker, setdisplayColorPicker] = useState(false);
+  const [color, setColor] = useState({ r: "0", g: "0", b: "0", a: "1" });
 
   function borderWidthChange(e) {
-    setBorderWidth(e.target.value)
+    setBorderWidth(e.target.value);
   }
 
   function borderChange(e) {
-    setBorderStyle(e.target.value)
+    setBorderStyle(e.target.value);
   }
 
   function handleClick() {
-    setdisplayColorPicker(!displayColorPicker)
+    setdisplayColorPicker(!displayColorPicker);
   }
 
   function handleClose() {
-    setdisplayColorPicker(false)
+    setdisplayColorPicker(false);
   }
 
   function handleChange(color) {
-    setdisplayColorPicker(color.rgb)
-    setColor(color.rgb)
+    setdisplayColorPicker(color.rgb);
+    setColor(color.rgb);
   }
 
   const styles = reactCSS({
-    'default': {
+    default: {
       color: {
-        width: '195px',
-        height: '7px',
-        borderRadius: '5px',
+        width: "195px",
+        height: "7px",
+        borderRadius: "5px",
         background: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
       },
       swatch: {
-        marginTop: '10px',
-        padding: '0',
-        background: '#fff',
-        borderRadius: '5px',
-        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-        display: 'inline-block',
-        cursor: 'pointer',
+        marginTop: "10px",
+        padding: "0",
+        background: "#fff",
+        borderRadius: "5px",
+        boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
+        display: "inline-block",
+        cursor: "pointer",
       },
       popover: {
-        position: 'absolute',
-        zIndex: '2',
-
+        position: "absolute",
+        zIndex: "2",
       },
       cover: {
-        position: 'fixed',
-        top: '0px',
-        right: '0px',
-        bottom: '0px',
-        left: '0px',
+        position: "fixed",
+        top: "0px",
+        right: "0px",
+        bottom: "0px",
+        left: "0px",
       },
     },
   });
 
   function ClearValuesBorder() {
-    setBorderStyle('solid')
-    setBorderWidth(1)
-    setColor({ r: '0', g: '0', b: '0', a: '1' })
+    setBorderStyle("solid");
+    setBorderWidth(1);
+    setColor({ r: "0", g: "0", b: "0", a: "1" });
   }
 
   return (
@@ -91,9 +95,11 @@ export default function Border() {
         />
       </Container>
       <Container>
-
         <SecAround>
-          <p>Insira os valores desejados, depois copie o novo código em sua folha de estilo.</p>
+          <p>
+            Insira os valores desejados, depois copie o novo código em sua folha
+            de estilo.
+          </p>
 
           <DivRange>
             <label>Select Border Style</label>
@@ -107,7 +113,19 @@ export default function Border() {
 
           <DivRange>
             <label>Select Border Width</label>
-            <input type="range" min={0} max={50} value={borderWidth} className="slider" onChange={borderWidthChange} />
+            <input
+              type="number"
+              value={borderWidth}
+              onChange={borderWidthChange}
+            />
+            <input
+              type="range"
+              min={0}
+              max={50}
+              value={borderWidth}
+              className="slider"
+              onChange={borderWidthChange}
+            />
           </DivRange>
 
           <DivRange>
@@ -117,34 +135,38 @@ export default function Border() {
               <div style={styles.swatch} onClick={handleClick}>
                 <div style={styles.color} />
               </div>
-              {displayColorPicker ? <div style={styles.popover}>
-                <div style={styles.cover} onClick={handleClose} />
-                <ChromePicker color={color} onChange={handleChange} />
-              </div> : null}
+              {displayColorPicker ? (
+                <div style={styles.popover}>
+                  <div style={styles.cover} onClick={handleClose} />
+                  <ChromePicker color={color} onChange={handleChange} />
+                </div>
+              ) : null}
             </div>
           </DivRange>
-
         </SecAround>
 
         <SecAround2>
-
           <DivAround>
             <span>border-style: {borderStyle}</span>
-            <span>border-width: {borderWidth}px {borderWidth}px {borderWidth}px {borderWidth}px</span>
-            <span>border-color: rgba({color.r},{color.g},{color.b}, {color.a})</span>
+            <span>
+              border-width: {borderWidth}px {borderWidth}px {borderWidth}px{" "}
+              {borderWidth}px
+            </span>
+            <span>
+              border-color: rgba({color.r},{color.g},{color.b}, {color.a})
+            </span>
 
             <div className="painel">
               <button onClick={ClearValuesBorder}>Resetar Valores</button>
             </div>
             <div className="painel">
-            <Link to="/"><button>Voltar para Home</button></Link>
+              <Link to="/">
+                <button>Voltar para Home</button>
+              </Link>
             </div>
           </DivAround>
-
         </SecAround2>
-
       </Container>
-      
     </div>
   );
 }
